@@ -43,6 +43,7 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
+    console.log(value)
     this.setState({selectedGenres: value});  }
 
   handleSelectedScene(e) {
@@ -53,6 +54,7 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
+    console.log(value)
     this.setState({selectedScene: value});  }
 
   handleSelectedStreaming(e) {
@@ -63,6 +65,7 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
+    console.log(value)
     this.setState({selectedStreaming: value});  }
 
   handleSubmit(event) {

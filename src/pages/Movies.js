@@ -12,14 +12,20 @@ class Movies extends Component {
   }
  
   componentDidMount() {
-    fetch('https://api.airtable.com/v0/apphinc6LL9Rd2fM8/Movies?api_key=keylJFOgElPG8qeFO')
+    fetch('https://api.airtable.com/v0/' + process.env.REACT_APP_MOVIE_BASE_ID + '/Movies?api_key=' + process.env.REACT_APP_AIRTABLE_API_KEY)
     .then((resp) => resp.json())
     .then(data => {
+      console.log(data.records)
       this.setState({ 
         movies: data.records
       });
     }).catch(err => {
       // error
+    })
+
+    this.state.movies.map(movie => {
+      console.log(movie)
+      return movie
     })
   }
 
@@ -36,7 +42,10 @@ class Movies extends Component {
           <div className="col">
             <div className="card-deck">
               <h1>List of All Movies:</h1>
-              {this.state.movies.map(movie => <MovieCard {...movie.fields} /> )}
+              {this.state.movies.map(movie => 
+                // <MovieCard title={movie.title} genres={movie.genres} scenes={movie.scenes} streaming={movie.streaming} key={movie.id} /> 
+                <MovieCard {...movie.fields} key={movie.id} /> 
+              )}
             </div>
           </div>
         </div>
