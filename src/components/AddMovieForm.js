@@ -1,7 +1,7 @@
 import React from 'react'
 import Multiselect from 'multiselect-react-dropdown'
 
-class FindMovieForm extends React.Component {
+class AddMovieForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class FindMovieForm extends React.Component {
 
     this.handleSelectedGenres = this.handleSelectedGenres.bind(this);
     this.handleSelectedScene = this.handleSelectedScene.bind(this);
-    this.handleSelectedScene = this.handleSelectedScene.bind(this);
+    this.handleSelectedStreaming = this.handleSelectedStreaming.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -43,8 +43,8 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
-    console.log(value)
-    this.setState({selectedGenres: value});  }
+    this.setState({selectedGenres: value});  
+  }
 
   handleSelectedScene(e) {
     var options = e.target.options;
@@ -54,8 +54,8 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
-    console.log(value)
-    this.setState({selectedScene: value});  }
+    this.setState({selectedScene: value});  
+  }
 
   handleSelectedStreaming(e) {
     var options = e.target.options;
@@ -65,8 +65,8 @@ class FindMovieForm extends React.Component {
         value.push({name: options[i].value, key: options[i].value});
       }
     }
-    console.log(value)
-    this.setState({selectedStreaming: value});  }
+    this.setState({selectedStreaming: value}); 
+  }
 
   handleSubmit(event) {
     alert('A form was submitted: ' + this.state.selectedGenres + " " + this.state.selectedScene + " " + this.selectedStreaming);
@@ -132,4 +132,4 @@ class FindMovieForm extends React.Component {
   }
 }
 
-export default FindMovieForm
+export default AddMovieForm
