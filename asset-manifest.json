@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/personal/static/css/main.af5b8f10.css",
-    "main.js": "/personal/static/js/main.1534699b.js",
-    "static/js/787.5c7a1ca7.chunk.js": "/personal/static/js/787.5c7a1ca7.chunk.js",
-    "index.html": "/personal/index.html",
-    "main.af5b8f10.css.map": "/personal/static/css/main.af5b8f10.css.map",
-    "main.1534699b.js.map": "/personal/static/js/main.1534699b.js.map",
-    "787.5c7a1ca7.chunk.js.map": "/personal/static/js/787.5c7a1ca7.chunk.js.map"
+    "main.css": "https://obglass.github.io/personal/static/css/main.af5b8f10.css",
+    "main.js": "https://obglass.github.io/personal/static/js/main.efac00c3.js",
+    "static/js/787.5c7a1ca7.chunk.js": "https://obglass.github.io/personal/static/js/787.5c7a1ca7.chunk.js",
+    "index.html": "https://obglass.github.io/personal/index.html",
+    "main.af5b8f10.css.map": "https://obglass.github.io/personal/static/css/main.af5b8f10.css.map",
+    "main.efac00c3.js.map": "https://obglass.github.io/personal/static/js/main.efac00c3.js.map",
+    "787.5c7a1ca7.chunk.js.map": "https://obglass.github.io/personal/static/js/787.5c7a1ca7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.af5b8f10.css",
-    "static/js/main.1534699b.js"
+    "static/js/main.efac00c3.js"
   ]
 }
