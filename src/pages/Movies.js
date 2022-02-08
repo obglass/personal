@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import MovieCard from '../components/MovieCard';
-import AddMovieForm from '../components/AddMovieForm'
+import AddMovieModal from '../components/AddMovieModal'
 import Select from 'react-select'
+import {Modal, Button} from 'react-bootstrap'
 
 class Movies extends Component {
 
@@ -10,6 +11,7 @@ class Movies extends Component {
     this.state = {
       movies: [],
       shownMovies: [],
+      chosenTitle: '',
       genres: [
         {value: 'Action/Adventure', label: 'Action/Adventure'},
         {value: 'Sci-Fi', label: 'Sci-Fi'},
@@ -26,20 +28,28 @@ class Movies extends Component {
         {value: 'Disney+', label: 'Disney+'},
         {value: 'Netflix', label: 'Netflix'},
         {value: 'Prime', label: 'Prime'},
-        {value: 'Hulu', label: 'Hulu'}
+        {value: 'Hulu', label: 'Hulu'},
+        {value: 'HBO Max', label: 'HBO Max'}
       ],
       selectedGenres: [],
       selectedScene: '',
-      selectedStreaming: []
+      selectedStreaming: [],
+      showModal: false
     };
+    this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSelectedGenres = this.handleSelectedGenres.bind(this);
     this.handleSelectedStreaming = this.handleSelectedStreaming.bind(this);
     this.handleSelectedScene = this.handleSelectedScene.bind(this);
-
+    this.showModal = this.showModal.bind(this)
+    this.hideModal = this.hideModal.bind(this)
   }
  
   componentDidMount() {
-    fetch('https://api.airtable.com/v0/' + process.env.REACT_APP_MOVIE_BASE_ID + '/Movies?api_key=' + process.env.REACT_APP_AIRTABLE_API_KEY)
+    this.fetchMovies()
+  }
+  
+  fetchMovies() {
+    fetch('https://api.airtable.com/v0/' + process.env.REACT_APP_TABLE_BASE_ID + '/Movies?api_key=' + process.env.REACT_APP_AIRTABLE_API_KEY)
     .then((resp) => resp.json())
     .then(data => {
       var movieArray = []
@@ -59,8 +69,22 @@ class Movies extends Component {
         shownMovies: movieArray
       })
     }).catch(err => {
-      // error
+      console.log(err)
     })
+  }
+
+  showModal() {
+    this.setState({showModal: true})
+  }
+
+  hideModal() {
+    this.setState({showModal: false})
+    this.fetchMovies()
+  }
+
+  handleTitleChange(e) {
+    this.setState({chosenTitle: e.target.value})
+    this.updateMovieList(e.target.value, this.state.selectedStreaming, this.state.selectedScene, this.state.selectedGenres)
   }
 
   handleSelectedGenres(e) {
@@ -70,12 +94,12 @@ class Movies extends Component {
       values.push(options[i].value)
     }
     this.setState({selectedGenres: values});  
-    this.updateMovieList(this.state.selectedStreaming, this.state.selectedScene, values)
+    this.updateMovieList(this.state.chosenTitle, this.state.selectedStreaming, this.state.selectedScene, values)
   }
 
   handleSelectedScene(e) {
     this.setState({selectedScene: e.value});  
-    this.updateMovieList(this.state.selectedStreaming, e.value, this.state.selectedGenres)
+    this.updateMovieList(this.state.chosenTitle, this.state.selectedStreaming, e.value, this.state.selectedGenres)
   }
 
   handleSelectedStreaming(e) {
@@ -85,16 +109,27 @@ class Movies extends Component {
       values.push(options[i].value)
     }
     this.setState({selectedStreaming: values});  
-    this.updateMovieList(values, this.state.selectedScene, this.state.selectedGenres
+    this.updateMovieList(this.state.chosenTitle, values, this.state.selectedScene, this.state.selectedGenres
     )
   }
 
-  updateMovieList(streaming, scene, genres) {
+  updateMovieList(title, streaming, scene, genres) {
     var updatedMovies = []
+    var titleMatch = false
     var streamMatch = false
     var sceneMatch = false
     var genreMatch = false
     this.state.movies.map(movie => {
+      // check title
+      if (title != null) {
+        if (movie.title.includes(title)) {
+          titleMatch = true
+        } else {
+          titleMatch = false
+        }
+      } else {
+        titleMatch = true
+      }
       // check streaming
       if (streaming != null && streaming.length !== 0) {
         if (streaming.includes(movie.streaming)) {
@@ -124,7 +159,7 @@ class Movies extends Component {
         }
       }
       // add matching movie to array
-      if (streamMatch && sceneMatch && genreMatch) {
+      if (titleMatch && streamMatch && sceneMatch && genreMatch) {
         updatedMovies.push(movie)
       }
       return updatedMovies
@@ -136,23 +171,24 @@ class Movies extends Component {
     return (
       <div className="container mt-5">
         <div className="row">
-          <div className="col">
-            <AddMovieForm/>
-          </div>
-        </div>
-        <div className="row">
           <div className="col-12">
             <h1>List of All Movies:</h1>
             </div>
         </div>
         <div className="row">
-       {/*<div className="col-3">
+          <div className="col">
             <label>
               Title
-              <input></input>
+              <input 
+                type="text"
+                value={this.state.chosenTitle}
+                onChange={this.handleTitleChange} 
+                className="form-control" 
+                aria-label="Default" 
+                aria-describedby="inputGroup-sizing-default"/>
             </label>
-          </div> */}
-          <div className="col-3">
+          </div>
+          <div className="col">
             <label>
               Genres
               <Select
@@ -163,7 +199,7 @@ class Movies extends Component {
               />
             </label>
           </div>
-          <div className="col-3">
+          <div className="col">
             <label>
               Streaming
               <Select
@@ -174,7 +210,7 @@ class Movies extends Component {
               />
             </label>
           </div>
-          <div className="col-3">
+          <div className="col">
             <label>
               Scenes
               <Select
@@ -183,7 +219,19 @@ class Movies extends Component {
               />
             </label>
           </div>
-        </div>    
+          <div className="col text-center my-auto">
+            <Button 
+              variant="primary"
+              onClick={this.showModal}
+            >
+            Add Movie
+            </Button>
+            <Modal show={this.state.showModal} onHide={this.hideModal}>
+              <AddMovieModal hideFunction={this.hideModal}/>
+            </Modal>
+          </div>
+        </div>  
+        <br/>  
         <div className="row">
           <div className="col">
             <div className="card-deck">
@@ -193,6 +241,7 @@ class Movies extends Component {
             </div>
           </div>
         </div>
+        <br/>
       </div>
     );
   }
