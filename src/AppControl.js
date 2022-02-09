@@ -12,10 +12,9 @@ class AppControl extends React.Component {
                 <div>
                     <Navigation />
                         <Routes>
-                            <Route path={process.env.PUBLIC_URL+'/'} element={<Home/>}/>
-                            <Route path={process.env.PUBLIC_URL+'/home'} element={<Home/>}/>
-                            <Route path={process.env.PUBLIC_URL+'/movies'} element={<Movies/>} />
-                            <Route path={process.env.PUBLIC_URL+'/shows'} element={<Shows/>} />
+                            <Route path='/personal/' element={<Home/>}/>
+                            <Route path='/personal/movies' element={<Movies/>} />
+                            <Route path='/personal/shows' element={<Shows/>} />
                             <Route element={<Home/>}/>
                         </Routes>
                 </div>
