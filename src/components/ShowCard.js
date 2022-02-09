@@ -15,12 +15,41 @@ class ShowCard extends React.Component {
     render() {
         return (
             <div className="card">
+                <div className="card-header">
+                    <div className="row">
+                        <div className="col-11">
+                            <h5 className="card-title">{this.state.title} ({this.state.seasons} Seasons)</h5>
+                        </div>
+                        <div className="col-1">
+                            <i className="bi bi-pencil-square"></i>
+                        </div>
+                    </div>
+                </div>
                 <div className="card-body">
-                <h5 className="card-title">{this.state.title} - {this.state.streaming}</h5>
-                <h6>Complete: {this.state.complete} Seasons: {this.state.seasons}</h6>
-                {this.state.genres?.map(genre => 
-                    <p key={genre}>{genre}</p> 
-                )}
+                    <div className="row">
+                        <div className="col-4">
+                           <b>Genres:</b>
+                        </div>
+                        <div className="col-4">
+                            <b>Streaming on:</b>
+                        </div>
+                        <div className="col-4">
+                            <b>Complete?</b>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-4">
+                        {this.state.genres?.map(genre => 
+                            <p key={genre}>{genre}</p> 
+                        )}
+                        </div>
+                        <div className="col-4">
+                            {this.state.streaming}
+                        </div>
+                        <div className="col-4">
+                            {this.state.complete}
+                        </div>
+                    </div>
                 </div>
             </div>
         );

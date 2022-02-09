@@ -12,25 +12,11 @@ class Shows extends Component {
       shows: [],
       shownShows: [],
       chosenTitle: '',
-      genres: [
-        {value: 'Action/Adventure', label: 'Action/Adventure'},
-        {value: 'Sci-Fi', label: 'Sci-Fi'},
-        {value: 'Mystery', label: 'Mystery'},
-        {value: 'Romance', label: 'Romance'},
-        {value: 'Nostalgic', label: 'Nostalgic'}
-      ],
       seasons: 0,
       complete: [
         {value: 'yes', label: 'Yes'},
         {value: 'no', label: 'No'},
         {value: 'cancelled', label: 'Cancelled'},
-      ],
-      streaming: [
-        {value: 'Disney+', label: 'Disney+'},
-        {value: 'Netflix', label: 'Netflix'},
-        {value: 'Prime', label: 'Prime'},
-        {value: 'Hulu', label: 'Hulu'},
-        {value: 'HBO Max', label: 'HBO Max'}
       ],
       selectedGenres: [],
       selectedSeason: '',
@@ -56,7 +42,26 @@ class Shows extends Component {
     .then((resp) => resp.json())
     .then(data => {
       var showArray = []
+      var genreOptions = []
+      var genreObjects = []
+      var streamingOptions = []
+      var streamingObjects = []
+
       data.records.map(show => {
+        // add genre options to array
+        if(show.fields.genres != null) {
+          show.fields.genres.map(genre => {
+            if (!genreOptions.includes(genre)) {
+              genreOptions.push(genre)
+            } 
+            return genreOptions
+          })
+        }
+        // add streaming options to array
+        if (show.fields.streaming != null && !streamingOptions.includes(show.fields.streaming)) {
+          streamingOptions.push(show.fields.streaming);
+        }
+
         var showObject = {
           title: show.fields.title,
           genres: show.fields.genres,
@@ -68,9 +73,17 @@ class Shows extends Component {
         showArray.push(showObject)
         return showObject
       })
+      genreOptions.forEach(genre => {
+        genreObjects.push({'value': genre, 'label': genre})
+      })
+      streamingOptions.forEach(streaming => {
+        streamingObjects.push({'value': streaming, 'label': streaming})
+      })
       this.setState({
         shows: showArray,
-        shownShows: showArray
+        shownShows: showArray,
+        genres: genreObjects,
+        streaming: streamingObjects
       })
     }).catch(err => {
       console.log(err)
@@ -266,7 +279,10 @@ class Shows extends Component {
           <div className="col">
             <div className="card-deck">
               {this.state.shownShows.map(show => 
-                <ShowCard title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} key={show.id} /> 
+                <div key={show.id}>
+                  <ShowCard title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} /> 
+                  <br/>
+                </div>
               )}
             </div>
           </div>
