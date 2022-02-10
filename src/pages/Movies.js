@@ -26,6 +26,7 @@ class Movies extends Component {
     this.handleSelectedGenres = this.handleSelectedGenres.bind(this);
     this.handleSelectedStreaming = this.handleSelectedStreaming.bind(this);
     this.handleSelectedScene = this.handleSelectedScene.bind(this);
+    this.fetchMovies = this.fetchMovies.bind(this)
     this.showModal = this.showModal.bind(this)
     this.hideModal = this.hideModal.bind(this)
   }
@@ -38,6 +39,7 @@ class Movies extends Component {
     fetch('https://api.airtable.com/v0/' + process.env.REACT_APP_TABLE_BASE_ID + '/Movies?api_key=' + process.env.REACT_APP_AIRTABLE_API_KEY)
     .then((resp) => resp.json())
     .then(data => {
+
       var movieArray = []
       var genreOptions = []
       var genreObjects = []
@@ -76,6 +78,7 @@ class Movies extends Component {
       streamingOptions.forEach(streaming => {
         streamingObjects.push({'value': streaming, 'label': streaming})
       })
+
       this.setState({
         movies: movieArray,
         shownMovies: movieArray,
@@ -251,7 +254,7 @@ class Movies extends Component {
             <div className="card-deck">
               {this.state.shownMovies.map(movie => 
                 <div key={movie.id}>
-                  <MovieCard title={movie.title} genres={movie.genres} scenes={movie.scenes} streaming={movie.streaming} /> 
+                  <MovieCard fetchMovies={this.fetchMovies} title={movie.title} genres={movie.genres} scenes={movie.scenes} streaming={movie.streaming} id={movie.id}/> 
                   <br/>
                 </div>
               )}

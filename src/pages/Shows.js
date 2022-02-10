@@ -280,7 +280,7 @@ class Shows extends Component {
             <div className="card-deck">
               {this.state.shownShows.map(show => 
                 <div key={show.id}>
-                  <ShowCard title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} /> 
+                  <ShowCard title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} id={show.id}/> 
                   <br/>
                 </div>
               )}

@@ -8,7 +8,8 @@ class ShowCard extends React.Component {
             genres: this.props.genres,
             seasons: this.props.seasons,
             complete: this.props.complete,
-            streaming: this.props.streaming
+            streaming: this.props.streaming,
+            id: this.props.id
         }
     }
 
