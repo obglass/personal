@@ -14,9 +14,10 @@ class Shows extends Component {
       chosenTitle: '',
       seasons: 0,
       complete: [
+        {value: 'select', label: 'Select..'},
         {value: 'yes', label: 'Yes'},
         {value: 'no', label: 'No'},
-        {value: 'cancelled', label: 'Cancelled'},
+        {value: 'cancelled', label: 'Cancelled'}
       ],
       selectedGenres: [],
       selectedSeason: '',
@@ -29,6 +30,7 @@ class Shows extends Component {
     this.handleSelectedStreaming = this.handleSelectedStreaming.bind(this);
     this.handleSelectedSeason = this.handleSelectedSeason.bind(this);
     this.handleSelectedComplete = this.handleSelectedComplete.bind(this);
+    this.fetchShows = this.fetchShows.bind(this)
     this.showModal = this.showModal.bind(this)
     this.hideModal = this.hideModal.bind(this)
   }
@@ -120,8 +122,14 @@ class Shows extends Component {
   }
 
   handleSelectedComplete(e) {
-    this.setState({selectedComplete: e.value});  
-    this.updateShowList(this.state.chosenTitle, this.state.selectedStreaming, this.state.selectedSeason, e.value, this.state.selectedGenres)
+    var value = ''
+    if (e.value.includes("select")) {
+      value = null
+    } else {
+      value = e.value
+    }
+    this.setState({selectedComplete: value});  
+    this.updateShowList(this.state.chosenTitle, this.state.selectedStreaming, this.state.selectedSeason, value, this.state.selectedGenres)
   }
 
   handleSelectedStreaming(e) {
@@ -142,9 +150,10 @@ class Shows extends Component {
     var genreMatch = false
     var completeMatch = false
     this.state.shows.map(show => {
+      console.log()
       // check title
       if (title != null) {
-        if (show.title.includes(title)) {
+        if (show.title.toLowerCase().includes(title.toLowerCase())) {
           titleMatch = true
         } else {
           titleMatch = false
@@ -163,7 +172,7 @@ class Shows extends Component {
         streamMatch = true
       }
       // check seasons
-      if (season != null) {
+      if (!isNaN(season) && season != null && season.length !== 0) {
         if (season === show.seasons) {
           seasonMatch = true
         } else {
@@ -174,7 +183,7 @@ class Shows extends Component {
       }
        // check complete
        if (complete != null && complete.length !== 0) {
-        if (complete.includes(show.complete)) {
+        if (complete === show.complete) {
           completeMatch = true
         } else {
           completeMatch = false
@@ -190,6 +199,7 @@ class Shows extends Component {
           genreMatch = false
         }
       }
+
       // add matching show to array
       if (titleMatch && streamMatch && seasonMatch && completeMatch && genreMatch) {
         updatedShows.push(show)
@@ -208,7 +218,7 @@ class Shows extends Component {
             </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-4">
             <label>
               Title
               <input 
@@ -220,7 +230,7 @@ class Shows extends Component {
                 aria-describedby="inputGroup-sizing-default"/>
             </label>
           </div>
-          <div className="col">
+          <div className="col-3">
             <label>
               Genres
               <Select
@@ -231,7 +241,7 @@ class Shows extends Component {
               />
             </label>
           </div>
-          <div className="col">
+          <div className="col-2">
             <label>
               Streaming
               <Select
@@ -242,7 +252,7 @@ class Shows extends Component {
               />
             </label>
           </div>
-          <div className="col">
+          <div className="col-1">
             <label>
               Seasons
               <input
@@ -252,7 +262,7 @@ class Shows extends Component {
               />
             </label>
           </div>
-          <div className="col">
+          <div className="col-2">
             <label>
               Complete
               <Select
@@ -273,14 +283,14 @@ class Shows extends Component {
               <AddShowModal hideFunction={this.hideModal}/>
             </Modal>
           </div>
-        </div>  
+        </div>
         <br/>  
         <div className="row">
           <div className="col">
             <div className="card-deck">
               {this.state.shownShows.map(show => 
                 <div key={show.id}>
-                  <ShowCard title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} id={show.id}/> 
+                  <ShowCard fetchShows={this.fetchShows} title={show.title} genres={show.genres} seasons={show.seasons} complete={show.complete} streaming={show.streaming} id={show.id}/> 
                   <br/>
                 </div>
               )}

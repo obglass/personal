@@ -13,6 +13,7 @@ class Movies extends Component {
       shownMovies: [],
       chosenTitle: '',
       scenes: [
+        {value: 'select', label: 'Select..'},
         {value: 'All', label: 'All'},
         {value: 'Scenes', label: 'Scenes'},
         {value: 'Mood', label: 'Mood'}
@@ -115,8 +116,14 @@ class Movies extends Component {
   }
 
   handleSelectedScene(e) {
-    this.setState({selectedScene: e.value});  
-    this.updateMovieList(this.state.chosenTitle, this.state.selectedStreaming, e.value, this.state.selectedGenres)
+    var value = ''
+    if (e.value.includes("select")) {
+      value = null
+    } else {
+      value = e.value
+    }
+    this.setState({selectedScene: value});  
+    this.updateMovieList(this.state.chosenTitle, this.state.selectedStreaming, value, this.state.selectedGenres)
   }
 
   handleSelectedStreaming(e) {
@@ -139,7 +146,7 @@ class Movies extends Component {
     this.state.movies.map(movie => {
       // check title
       if (title != null) {
-        if (movie.title.includes(title)) {
+        if (movie.title.toLowerCase().includes(title.toLowerCase())) {
           titleMatch = true
         } else {
           titleMatch = false
