@@ -218,8 +218,8 @@ class Shows extends Component {
             </div>
         </div>
         <div className="row">
-          <div className="col-4">
-            <label>
+          <div className="col-3">
+            <label style={{width:'100%'}}>
               Title
               <input 
                 type="text"
@@ -230,8 +230,8 @@ class Shows extends Component {
                 aria-describedby="inputGroup-sizing-default"/>
             </label>
           </div>
-          <div className="col-3">
-            <label>
+          <div className="col-2">
+            <label style={{width:'100%'}}>
               Genres
               <Select
                 options={this.state.genres} 
@@ -242,7 +242,7 @@ class Shows extends Component {
             </label>
           </div>
           <div className="col-2">
-            <label>
+            <label className="label-width" style={{width:'100%'}}>
               Streaming
               <Select
                 options={this.state.streaming} 
@@ -253,7 +253,7 @@ class Shows extends Component {
             </label>
           </div>
           <div className="col-1">
-            <label>
+            <label style={{width:'100%'}}>
               Seasons
               <input
                 type="number"
@@ -263,7 +263,7 @@ class Shows extends Component {
             </label>
           </div>
           <div className="col-2">
-            <label>
+            <label style={{width:'100%'}}>
               Complete
               <Select
                 options={this.state.complete}
@@ -272,7 +272,7 @@ class Shows extends Component {
               />
             </label>
           </div>
-          <div className="col text-center my-auto">
+          <div className="col-2 text-center my-auto">
             <Button 
               variant="primary"
               onClick={this.showModal}

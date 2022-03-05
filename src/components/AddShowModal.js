@@ -27,10 +27,10 @@ class AddShowModal extends React.Component {
         {value: 'HBO Max', label: 'HBO Max'}
       ],
       selectedGenres: [],
-      selectedSeasons: '',
       selectedComplete: '',
       selectedStreaming: [],
-      selectedTitle: ''
+      selectedTitle: '',
+      selectedSeasons: 1
     };
 
     this.handleSelectedGenres = this.handleSelectedGenres.bind(this);
@@ -70,7 +70,7 @@ class AddShowModal extends React.Component {
     var base = 'https://api.airtable.com/v0/' + process.env.REACT_APP_TABLE_BASE_ID + '/Shows?api_key=' + process.env.REACT_APP_AIRTABLE_API_KEY
     const body = JSON.stringify({"fields": {
         "title": document.getElementById('titleInput').value,
-        "seasons": this.state.selectedSeason,
+        "seasons": Number(document.getElementById('addedSeasons').value),
         "complete": this.state.selectedComplete,
         "streaming": this.state.selectedStreaming,
         "genres": this.state.selectedGenres
@@ -103,6 +103,7 @@ class AddShowModal extends React.Component {
                   Title
                   <input 
                     type="text"
+                    id="titleInput"
                     value={this.state.chosenTitle}
                     className="form-control" 
                     aria-label="Default" 
@@ -132,6 +133,7 @@ class AddShowModal extends React.Component {
                   <br/>
                   <input 
                     type="number"
+                    id="addedSeasons"
                     onChange={this.handleSelectedSeasons} 
                   />
                 </label>
